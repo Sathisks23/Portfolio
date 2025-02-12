@@ -21,6 +21,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+      <meta name="robots" content="index, follow" />
+      <link rel="canonical" href="https://sathishdiaries.vercel.app" />
       <meta name="google-site-verification" content="uvZ3FIqlGxeTrYfKvjDBMVI980FIDsfUvG3Lj0lCvls" />
       </head>
       <body
