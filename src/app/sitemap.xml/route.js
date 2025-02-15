@@ -12,7 +12,7 @@ export async function GET() {
   sitemap += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 
   // Add Static Pages
-  const staticPages = ["/", "/about", "/contact", "/projects"];
+  const staticPages = ["/", "/about", "/contact", "/projects",];
   staticPages.forEach((page) => {
     sitemap += `<url><loc>${baseUrl}${page}</loc></url>\n`;
   });
