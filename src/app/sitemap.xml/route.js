@@ -24,5 +24,5 @@ export async function GET() {
 
   sitemap += `</urlset>`;
 
-  return new NextResponse(sitemap, { headers: { "Content-Type": "text/xml" } });
+  return new NextResponse(sitemap, { headers: { "Content-Type": "application/xml" } });
 }
