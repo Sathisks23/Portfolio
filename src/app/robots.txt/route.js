@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export function GET() {
+export async function GET() {
   const robots = `User-agent: *
 Allow: /
 Sitemap: https://sathishdiaries.vercel.app/sitemap.xml`;
