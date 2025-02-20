@@ -3,82 +3,86 @@ import { useState } from "react";
 import axios from "axios";
 
 const Contact = () => {
-  const [contactDetails, setDetails] = useState({
+  const [contactDetails, setContactDetails] = useState({
     name: "",
     email: "",
     message: "",
   });
 
-  const [result, setResult] = useState("");
-  const [apiResponse, setApiResponse] = useState("");
+  const [message, setMessage] = useState({ text: "", type: "" });
   const [loading, setLoading] = useState(false);
 
-  async function formHandling(e) {
+  const handleChange = (e) => {
+    setContactDetails({ ...contactDetails, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(contactDetails);
 
     if (!contactDetails.name || !contactDetails.email || !contactDetails.message) {
-      setResult("All fields are required");
-      setTimeout(() => setResult(""), 2000);
+      setMessage({ text: "All fields are required", type: "error" });
       return;
     }
 
     try {
       setLoading(true);
       const response = await axios.post("/api/addContact", contactDetails);
-      setApiResponse(response.data.message);
+      console.log(response,'res');
+      
+      setMessage({ text: response.data.message, type: "success" });
+      setContactDetails({ name: "", email: "", message: "" });
     } catch (error) {
-      setApiResponse(error.response?.data?.error || "Something went wrong!");
+      console.log(error);
+      
+      setMessage({ text: error.response?.data?.error || "Something went wrong!", type: "error" });
     } finally {
       setLoading(false);
-      setTimeout(() => setApiResponse(""), 3000);
-      setDetails({ name: "", email: "", message: "" });
+      setTimeout(() => setMessage({ text: "", type: "" }), 3000);
     }
-  }
-
-  function inputHandler(e) {
-    const { name, value } = e.target;
-    setDetails((prev) => ({ ...prev, [name]: value }));
-  }
+  };
 
   return (
-    <div className="p-4 mx-auto max-w-xl bg-white font-[sans-serif] m-12">
-      <h1 className="text-2xl text-gray-800 font-bold text-center">Contact Us</h1>
-      <div>
-        {result && <div className="text-red-500">{result}</div>}
-        {apiResponse && <div className="text-lime-700 text-sm p-2">{apiResponse}</div>}
-        {loading && <div>Loading...</div>}
-      </div>
-      <form className="mt-8 space-y-4" onSubmit={formHandling}>
+    <div className="p-6 mx-auto max-w-md bg-white shadow-lg rounded-lg">
+      <h2 className="text-2xl font-bold text-center text-gray-800">Contact Us</h2>
+
+      {message.text && (
+        <div className={`p-2 text-sm text-center mt-3 rounded ${message.type === "error" ? "text-red-700 bg-red-100" : "text-green-700 bg-green-100"}`}>
+          {message.text}
+        </div>
+      )}
+
+      <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Name"
-          onChange={inputHandler}
           name="name"
+          placeholder="Name"
           value={contactDetails.name}
-          className="w-full py-2.5 px-4 text-gray-800 bg-gray-100 border focus:border-black focus:bg-transparent text-sm outline-none transition-all"
+          onChange={handleChange}
+          className="w-full p-2 border rounded focus:outline-none focus:border-black"
         />
         <input
           type="email"
-          placeholder="Email"
-          onChange={inputHandler}
           name="email"
+          placeholder="Email"
           value={contactDetails.email}
-          className="w-full py-2.5 px-4 text-gray-800 bg-gray-100 border focus:border-black focus:bg-transparent text-sm outline-none transition-all"
+          onChange={handleChange}
+          className="w-full p-2 border rounded focus:outline-none focus:border-black"
         />
         <textarea
+          name="message"
           placeholder="Message"
           rows="4"
-          onChange={inputHandler}
-          name="message"
           value={contactDetails.message}
-          className="w-full px-4 text-gray-800 bg-gray-100 border focus:border-black focus:bg-transparent text-sm pt-3 outline-none transition-all"
+          onChange={handleChange}
+          className="w-full p-2 border rounded focus:outline-none focus:border-black"
         ></textarea>
+
         <button
           type="submit"
-          className="text-white bg-black hover:bg-gray-900 tracking-wide text-sm px-4 py-2.5 w-full outline-none"
+          disabled={loading}
+          className="w-full bg-black text-white py-2 rounded hover:bg-gray-900 disabled:bg-gray-500"
         >
-          Send
+          {loading ? "Sending..." : "Send"}
         </button>
       </form>
     </div>
