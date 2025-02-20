@@ -26,14 +26,13 @@ const Contact = () => {
 
     try {
       setLoading(true);
-      const response = await axios.post("/api/addContact", contactDetails);
+      const response = await axios.post("https://sathishdiaries.vercel.app/api/addContact", contactDetails);
       console.log(response,'res');
       
       setMessage({ text: response.data.message, type: "success" });
       setContactDetails({ name: "", email: "", message: "" });
     } catch (error) {
-      console.log(error);
-      
+      console.log(error); 
       setMessage({ text: error.response?.data?.error || "Something went wrong!", type: "error" });
     } finally {
       setLoading(false);
