@@ -13,7 +13,7 @@ const Contact = () => {
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setContactDetails({ ...contactDetails, [e.target.name]: e.target.value });
+    setContactDetails((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e) => {
@@ -27,13 +27,13 @@ const Contact = () => {
     try {
       setLoading(true);
       const response = await axios.post("/api/addContact", contactDetails);
-      console.log(response,'res');
-      
-      setMessage({ text: response.data.message, type: "success" });
+      console.log("Success Response:", response.data);
+
+      setMessage({ text: response.data?.message || "Message sent successfully!", type: "success" });
       setContactDetails({ name: "", email: "", message: "" });
     } catch (error) {
-      console.log(error); 
-      setMessage({ text: error.response?.data?.error || "Something went wrong!", type: "error" });
+      console.log("API Error:", error.response?.data || error.message);
+      setMessage({ text: String(error.response?.data?.error || "Something went wrong!"), type: "error" });
     } finally {
       setLoading(false);
       setTimeout(() => setMessage({ text: "", type: "" }), 3000);
