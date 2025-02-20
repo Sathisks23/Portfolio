@@ -26,7 +26,7 @@ const Contact = () => {
 
     try {
       setLoading(true);
-      const response = await axios.post("https://sathishdiaries.vercel.app/api/addContact", contactDetails);
+      const response = await axios.post("/api/addContact", contactDetails);
       console.log(response,'res');
       
       setMessage({ text: response.data.message, type: "success" });
