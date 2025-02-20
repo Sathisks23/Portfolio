@@ -24,7 +24,7 @@ const Contact = () => {
     
      try {
       setLoading(true)
-      const response =await axios.post(process.env.NEXT_PUBLIC_BASE_URL+'api/addContact',contactDetails)
+      const response =await axios.post('api/addContact',contactDetails)
       setApiResponse(response.data.message)
      } catch (error) {
       setApiResponse(error.message)

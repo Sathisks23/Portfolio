@@ -4,7 +4,7 @@ const PostSchema = new mongoose.Schema({
     title: { type: String, required: true },
     slug: { type: String, required: true, unique: true },
     content: { type: String, required: true },
-    image: { type: String }, 
+    images: { type: [String] }, 
     keywords: { type: [String] },
     description: { type: String }, 
     createdAt: { type: Date, default: Date.now },
